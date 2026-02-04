@@ -89,19 +89,19 @@ h1 { margin:20px; font-size:2.4rem; letter-spacing:3px; text-shadow:2px 2px 12px
 
 <script>
 // ---------------------- data & state ----------------------
-let WORDS = [];               // will hold UPPERCASE words
+let WORDS = [];               // will hold UPPERCASE words (possible solutions from target_words.txt)
 let solution = "";            // UPPERCASE solution
 let board, keyboard;
 let currentRow = 0, currentCol = 0;
 let inputLocked = false;
 const SECRET_CODE = "JiMmYiStHeCoOlEsTgUy|2025.letmecheat|L^UP++0U+L0UD";
 
-// Try to load words.txt first (solutions). If fail, fall back
-fetch("words.txt")
+// Load target_words.txt as the possible solutions
+fetch("../target_words.txt")
   .then(r => r.text())
   .then(txt => {
     WORDS = txt.split(/\r?\n/).map(w=>w.trim()).filter(w=>w.length===5).map(w=>w.toUpperCase());
-    if(WORDS.length === 0) throw new Error("No 5-letter words found in words.txt");
+    if(WORDS.length === 0) throw new Error("No 5-letter words found in target_words.txt");
     solution = WORDS[Math.floor(Math.random()*WORDS.length)];
     init();
   })
@@ -110,14 +110,6 @@ fetch("words.txt")
     WORDS = ["APPLE","GRAPE","WATER","LIGHT","HOUSE","PLANT","STONE","SMILE","MUSIC","TRAIN"];
     solution = WORDS[Math.floor(Math.random()*WORDS.length)];
     init();
-  });
-
-// Load words.txt as the allowed guesses (dictionary)
-// NOTE: This list may be bigger and is only for validation
-fetch("words.txt")
-  .then(r => r.text())
-  .then(txt => {
-    GUESS_WORDS = txt.split(/\r?\n/).map(w=>w.trim()).filter(w=>w.length===5).map(w=>w.toUpperCase());
   });
 
 // ---------------------- init ----------------------
